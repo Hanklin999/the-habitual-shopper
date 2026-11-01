@@ -125,6 +125,8 @@ Shopper 42's consecutive orders contain substantially different products, but al
 
 **Closing takeaway:** Shopping behavior is more complex than a single repetition metric can capture. Historical patterns may be informative, but they should be interpreted cautiously before informing product decisions.
 
+Among shoppers with complete purchase records through order 15, 80.3% of Routine shoppers (n = 127) and 53.7% of Rotational shoppers (n = 41) retained their original exploratory classifications. These percentages reflect a selected validation subset, and the results may be influenced by the accumulation of purchase history.
+
 ---
 
 ## 4. Data Sources and Analysis Plan
@@ -171,7 +173,7 @@ This study relies on observational purchase records rather than product impressi
 
 **Visual design:** Initial sketches are produced with Matplotlib. The final graphics are expected to be refined using Tableau and/or Plotly to improve readability, annotation, and reader engagement.
 
-**Storytelling medium:** The intended final presentation is a web-based, scroll-driven narrative using GitHub Pages or a comparable interactive storytelling platform. Readers will move through the four acts sequentially, with focused visual explanations and a real basket example connecting quantitative findings to an intuitive consumer experience. The final medium will be selected based on implementation feasibility and course requirements.
+**Storytelling medium:** The final project is planned as a scroll-driven narrative published through GitHub Pages. Python and Pandas will support data preparation, while Tableau and/or Plotly will be used to develop annotated visualizations. Readers will progress through four connected acts, moving from basket similarity to category-level patterns, product novelty, and behavioral persistence. The website will combine quantitative evidence with a real shopper example and clearly communicate the limitations of observational data.
 
 **Intended outcome:** The project will provide an accessible explanation of why different measures of basket change can lead to different interpretations of consumer behavior, together with practical questions that e-commerce product managers could investigate through future experiments.
 
