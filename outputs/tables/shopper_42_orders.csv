@@ -1,0 +1,14 @@
+order_id,product_id,add_to_cart_order,reordered,user_id,eval_set,order_number,order_dow,order_hour_of_day,days_since_prior_order,product_name,aisle_id,department_id,aisle,department
+521231,13187,1,1,42,prior,9,3,19,24.0,Original Chicken Patties,42,1,frozen vegan vegetarian,frozen
+521231,1263,2,1,42,prior,9,3,19,24.0,American Cheese Slices 12 Count,21,16,packaged cheese,dairy eggs
+521231,39275,3,0,42,prior,9,3,19,24.0,Organic Blueberries,123,4,packaged vegetables fruits,produce
+521231,41973,4,1,42,prior,9,3,19,24.0,White Distilled Vinegar,19,13,oils vinegars,pantry
+521231,79,5,1,42,prior,9,3,19,24.0,Wild Albacore Tuna No Salt Added,95,15,canned meat seafood,canned goods
+521231,18439,6,1,42,prior,9,3,19,24.0,Sliced Sourdough Bread,112,3,bread,bakery
+2019391,27796,1,1,42,prior,10,5,1,9.0,Real Mayonnaise,72,13,condiments,pantry
+2019391,39275,2,1,42,prior,10,5,1,9.0,Organic Blueberries,123,4,packaged vegetables fruits,produce
+2019391,30511,3,1,42,prior,10,5,1,9.0,Thin & Crispy Crust Four Cheese Pizza,79,1,frozen pizza,frozen
+2019391,22559,4,1,42,prior,10,5,1,9.0,Kitchen Cheese Enchilada,38,1,frozen meals,frozen
+2019391,37055,5,1,42,prior,10,5,1,9.0,Organic Cheesy Ravioli,59,15,canned meals beans,canned goods
+2019391,21925,6,1,42,prior,10,5,1,9.0,50/50 Mix Spring Mix and Baby Spinach Salad Blend,123,4,packaged vegetables fruits,produce
+2019391,12381,7,1,42,prior,10,5,1,9.0,Bowls Tortilla Casserole & Black Beans,42,1,frozen vegan vegetarian,frozen

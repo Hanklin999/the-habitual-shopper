@@ -1,0 +1,16 @@
+,value
+main_users,484.0
+mean_product_overlap,0.1936490802902867
+mean_aisle_overlap,0.2964084034190938
+mean_department_overlap,0.4607949786668795
+mean_novelty,0.38901167268094
+jaccard_cutoff,0.15857048715504596
+novelty_cutoff,0.38038766788766787
+jaccard_novelty_correlation,-0.6847077002503349
+rotational_users,50.0
+rotational_share,0.10330578512396695
+later_window_users,323.0
+routine_retention,0.8031496062992126
+rotational_retention,0.5365853658536586
+shopper_42_jaccard,0.08333333333333333
+shopper_42_novelty,0.0

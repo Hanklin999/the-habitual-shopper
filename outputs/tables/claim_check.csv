@@ -1,0 +1,11 @@
+metric,actual,expected,tolerance,passed
+main_users,484.0,484.0,0.0,True
+mean_product_overlap,0.1936490802902867,0.194,0.001,True
+mean_aisle_overlap,0.2964084034190938,0.296,0.001,True
+mean_department_overlap,0.4607949786668795,0.461,0.001,True
+rotational_users,50.0,50.0,0.0,True
+later_window_users,323.0,323.0,0.0,True
+routine_retention,0.8031496062992126,0.803,0.001,True
+rotational_retention,0.5365853658536586,0.537,0.001,True
+shopper_42_jaccard,0.08333333333333333,0.08333333333333333,1e-06,True
+shopper_42_novelty,0.0,0.0,1e-06,True

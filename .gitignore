@@ -1,0 +1,12 @@
+# Python environment
+.venv/
+__pycache__/
+*.pyc
+
+# Instacart source and intermediate data
+data/raw/
+data/processed/
+
+# System files
+.DS_Store
+Thumbs.db
