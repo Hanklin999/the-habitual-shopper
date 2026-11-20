@@ -1,0 +1,3 @@
+similarity_group,order_pairs,shoppers,no_new_pairs,no_new_shoppers,no_new_product_rate,average_novelty,average_jaccard
+High similarity,783,271,299,152,0.3818646232439336,0.16729655707298807,0.3539812515280957
+Low similarity,832,273,144,103,0.17307692307692307,0.40989042741334725,0.05692239813316708
