@@ -1,0 +1,27 @@
+user_id,order_number,product_id,product_name,aisle,department,status
+977,8,39408,Gala Apples,fresh fruits,produce,New to recorded history
+977,8,24852,Banana,fresh fruits,produce,Same as last order
+977,8,12341,Hass Avocados,packaged produce,produce,Same as last order
+977,8,16797,Strawberries,fresh fruits,produce,Same as last order
+977,8,13351,Total 0% Peach Yogurt,yogurt,dairy eggs,Same as last order
+977,8,24838,Unsweetened Almondmilk,soy lactosefree,dairy eggs,Same as last order
+977,9,17794,Carrots,fresh vegetables,produce,"Bought before, not last time"
+977,9,38650,Organic Red Lentils,grains rice dried goods,dry goods pasta,"Bought before, not last time"
+977,9,36164,Organics Spinach,packaged vegetables fruits,produce,"Bought before, not last time"
+977,9,7401,Raw Chocolate Cacao Nibs,nuts seeds dried fruit,snacks,"Bought before, not last time"
+977,9,39024,Edamame In Pod,frozen produce,frozen,New to recorded history
+977,9,45066,Honeycrisp Apple,fresh fruits,produce,New to recorded history
+977,9,47626,Large Lemon,fresh fruits,produce,New to recorded history
+977,9,2651,Mayonnaise,condiments,pantry,New to recorded history
+977,9,7021,Organic Tomato Paste,canned jarred vegetables,canned goods,New to recorded history
+977,9,22759,Reduced Sodium Chicken Base,soup broth bouillon,canned goods,New to recorded history
+977,9,4605,Yellow Onions,fresh vegetables,produce,New to recorded history
+977,9,16797,Strawberries,fresh fruits,produce,Same as last order
+977,9,13351,Total 0% Peach Yogurt,yogurt,dairy eggs,Same as last order
+977,10,24852,Banana,fresh fruits,produce,"Bought before, not last time"
+977,10,11262,Extra Thick Whole Grain Rolled Oats,hot cereal pancake mixes,breakfast,"Bought before, not last time"
+977,10,12341,Hass Avocados,packaged produce,produce,"Bought before, not last time"
+977,10,24838,Unsweetened Almondmilk,soy lactosefree,dairy eggs,"Bought before, not last time"
+977,10,36164,Organics Spinach,packaged vegetables fruits,produce,Same as last order
+977,10,16797,Strawberries,fresh fruits,produce,Same as last order
+977,10,13351,Total 0% Peach Yogurt,yogurt,dairy eggs,Same as last order
