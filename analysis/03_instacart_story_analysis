@@ -1,28 +1,39 @@
-"""Instacart storytelling analysis: repeat share, basket composition, shopper example.
-Run: python instacart_story_analysis.py --data-dir habitual_results
-Requires: joined_transactions.csv and basket_pairs.csv from the existing preparation pipeline.
+"""The Habitual Shopper — Part III: story analysis.
+Run from repository root: py analysis/03_story_analysis.py
+Inputs: data/processed/{joined_transactions,basket_pairs}.csv
+Outputs: outputs/figures/03_*.png; outputs/tables/03_*.csv
 """
-import argparse
 from pathlib import Path
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+
+PROJECT_DIR = Path(__file__).resolve().parents[1]
+PROCESSED_DIR = PROJECT_DIR / 'data' / 'processed'
+FIGURE_DIR = PROJECT_DIR / 'outputs' / 'figures'
+TABLE_DIR = PROJECT_DIR / 'outputs' / 'tables'
 
 LEVELS = {'Product': 'product_id', 'Aisle': 'aisle_id', 'Department': 'department_id'}
 STATUS = ['Same as last order', 'Bought before, not last time', 'New to recorded history']
 COLORS = {'Product': '#457B9D', 'Aisle': '#E9A23B', 'Department': '#3A9674'}
 STATUS_COLORS = ['#457B9D', '#E9A23B', '#8DA6A0']
 
-def run(data_dir: Path, output_dir: Path):
-    output_dir.mkdir(parents=True, exist_ok=True)
-    tx = pd.read_csv(data_dir / 'joined_transactions.csv')
-    pairs = pd.read_csv(data_dir / 'basket_pairs.csv')
+def run():
+    FIGURE_DIR.mkdir(parents=True, exist_ok=True)
+    TABLE_DIR.mkdir(parents=True, exist_ok=True)
+    for filename in ('joined_transactions.csv', 'basket_pairs.csv'):
+        if not (PROCESSED_DIR / filename).is_file():
+            raise FileNotFoundError(
+                f'Missing {PROCESSED_DIR / filename}. Run analysis/01_prepare_data.py first.'
+            )
+    tx = pd.read_csv(PROCESSED_DIR / 'joined_transactions.csv')
+    pairs = pd.read_csv(PROCESSED_DIR / 'basket_pairs.csv')
     required = {'user_id','order_id','order_number','product_id','product_name','aisle_id','department_id','aisle','department'}
     if not required.issubset(tx.columns):
         raise ValueError(f'Missing joined_transactions columns: {sorted(required - set(tx.columns))}')
     if not {'user_id','order_number'}.issubset(pairs.columns):
         raise ValueError('basket_pairs.csv needs user_id and order_number')
-    if tx.duplicated(['order_id', 'product_id']).any():
+    if tx.duplicated(['user_id', 'order_number', 'product_id']).any():
         raise ValueError('Duplicate order_id/product_id in joined_transactions.csv')
     # Match original eligibility and make sure all historical order baskets exist.
     counts = pairs.loc[pairs.order_number.between(5,10)].groupby('user_id').order_number.nunique()
@@ -31,6 +42,7 @@ def run(data_dir: Path, output_dir: Path):
     eligible = sorted(uid for uid in eligible if set(range(1,11)).issubset(available.get(uid, set())))
     if not eligible:
         raise ValueError('No users with complete orders 1–10 in both processed input files')
+    print(f'Eligible shoppers with complete Orders 1–10: {len(eligible)}')
     tx = tx[tx.user_id.isin(eligible) & tx.order_number.between(1,10)].copy()
     baskets = {(uid, num): grp.sort_values('add_to_cart_order') if 'add_to_cart_order' in grp.columns else grp
                for (uid,num), grp in tx.groupby(['user_id','order_number'])}
@@ -59,9 +71,11 @@ def run(data_dir: Path, output_dir: Path):
     items = pd.DataFrame(item_rows)
     assert len(order_metrics) == 6*len(eligible)
     shopper_repeat = order_metrics.groupby('user_id')[list(LEVELS)].mean()*100
-    shopper_repeat.to_csv(output_dir/'shopper_repeat_profiles.csv')
-    order_metrics.to_csv(output_dir/'order_repeat_metrics.csv',index=False)
-    items.to_csv(output_dir/'item_purchase_status.csv',index=False)
+    if not ((shopper_repeat['Product'] <= shopper_repeat['Aisle'] + 1e-9) & (shopper_repeat['Aisle'] <= shopper_repeat['Department'] + 1e-9)).all():
+        raise AssertionError('Product <= Aisle <= Department must hold for nested categories')
+    shopper_repeat.to_csv(TABLE_DIR/'03_shopper_repeat_profiles.csv')
+    order_metrics.to_csv(TABLE_DIR/'03_order_repeat_metrics.csv',index=False)
+    items.to_csv(TABLE_DIR/'03_item_purchase_status.csv',index=False)
     # Act 1: shared histogram axes, same users, same bin widths.
     fig, axes = plt.subplots(3,1,figsize=(9,9),sharex=True,sharey=True)
     edges = np.linspace(0,100,6)
@@ -80,58 +94,3 @@ def run(data_dir: Path, output_dir: Path):
     axes[-1].set_xlabel('Average previous-basket match share')
     fig.suptitle('Different Products, Familiar Categories?',weight='bold',fontsize=16)
     fig.text(.5,.005,f'Same {len(eligible)} shoppers; Orders 5–10; shopper-weighted',ha='center',fontsize=9)
-    fig.tight_layout(rect=[0,.025,1,.965])
-    fig.savefig(output_dir/'01_repeat_distributions.png',dpi=200,bbox_inches='tight')
-    plt.close(fig)
-    # Act 2: every order's status mix, then average each shopper's mix for equal weighting.
-    basket_status = (items.groupby(['user_id','order_number','status']).size()
-                     .unstack(fill_value=0).reindex(columns=STATUS,fill_value=0))
-    basket_status = basket_status.div(basket_status.sum(axis=1),axis=0)
-    shopper_mix = basket_status.groupby(level='user_id').mean()
-    mix = shopper_mix.mean()*100
-    assert np.isclose(mix.sum(),100)
-    shopper_mix.to_csv(output_dir/'shopper_basket_composition.csv')
-    mix.rename('percent').to_csv(output_dir/'basket_composition_summary.csv')
-    fig,ax=plt.subplots(figsize=(10,2.5))
-    left=0
-    for status,color in zip(STATUS,STATUS_COLORS):
-        pct=mix[status]
-        ax.barh(['Current basket'],[pct],left=left,color=color,label=f'{status}: {pct:.1f}%')
-        if pct>=8:
-            ax.text(left+pct/2,0,f'{pct:.1f}%',ha='center',va='center',weight='bold',color='#222222')
-        left += pct
-    ax.set_xlim(0,100)
-    ax.set_xlabel('Share of items in current basket (%)')
-    ax.set_title('Where do the products in the next basket come from?',loc='left',weight='bold')
-    ax.legend(loc='upper center',bbox_to_anchor=(.5,-.45),ncol=1,frameon=False)
-    ax.spines[['top','right','left']].set_visible(False)
-    fig.tight_layout()
-    fig.savefig(output_dir/'02_basket_composition.png',dpi=200,bbox_inches='tight')
-    plt.close(fig)
-    # Act 3: choose a shopper with many formerly bought but nonconsecutive items,
-    # and readable order sizes; label this an illustrative case, not typical.
-    candidates = shopper_mix.copy()
-    candidates['rotate_share'] = candidates[STATUS[1]]
-    order_sizes = order_metrics.groupby('user_id').basket_size.agg(['max','mean'])
-    candidates = candidates.join(order_sizes)
-    readable = candidates[(candidates['max']<=15)&(candidates['mean']>=3)]
-    if readable.empty:
-        readable = candidates
-    chosen = readable.sort_values(['rotate_share','max'],ascending=[False,True]).index[0]
-    example = items[(items.user_id==chosen)&(items.order_number.between(8,10))].copy()
-    example.to_csv(output_dir/'03_shopper_example_items.csv',index=False)
-    # Act 5: product recommendation hypotheses only; not measured treatment effects.
-    print(f'Eligible shoppers: {len(eligible)}')
-    print('Median repeat share (%) by level:')
-    print(shopper_repeat.median().round(1).to_string())
-    print('Shopper-weighted basket composition (%):')
-    print(mix.round(1).to_string())
-    print(f'Illustrative shopper: {chosen} (Orders 8–10 saved as CSV)')
-    print(f'Outputs: {output_dir.resolve()}')
-
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--data-dir',type=Path,default=Path('habitual_results'))
-    parser.add_argument('--output-dir',type=Path,default=Path('habitual_results/story_outputs'))
-    args = parser.parse_args()
-    run(args.data_dir,args.output_dir)
